@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        #box1, #box2, #box3, #box4, #box5 {
+        font-size: 22px;
+  border-radius: 5px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 15);
+}
+
+    ::placeholder {
+  font-size: 20px;
+}
+
+    .button {
+  display: inline-block;
+  padding: 15px 25px;
+  font-size: 24px;
+  cursor: pointer;
+  text-align: center;
+  text-decoration: none;
+  outline: none;
+  color: #fff;
+  background-color:  #85c1e9 ;
+  border: none;
+  border-radius: 15px;
+  box-shadow: 0 9px #999;
+}
+
+.button:hover {background-color: #3e8e41}
+
+.button:active {
+  background-color: blue;
+  box-shadow: 0 5px #666;
+  transform: translateY(4px);
+}
+    </style>
+</head>
+<body>
+<script>
+    async function myfunction(msg1, msg2, msg3){
+        var para = document.getElementById("box1").value;
+        document.getElementById('loading').style.display='block';
+        var lines = para.split('.');
+        var i;
+        for(i=0; i<lines.length - 1; i++)
+        {
+            document.getElementById('demo').innerHTML=msg1;
+            await sleep(6000);
+            document.getElementById('demo').innerHTML=msg2;
+            await sleep(6000);
+            document.getElementById('demo').innerHTML=msg3;
+            await sleep(6000);
+        }
+    }
+
+function sleep(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
+</script>
+<div align="center" style="margin-top: -12px;">
+    <form action="/" method="POST" name="form">
+    <!--action="/" method="POST"-->
+    {% csrf_token %}
+    <div align="left" style="margin-left: 20px;"><p style="font-family:sans-serif; font-size: 30px;">English content</p>
+        <div style="margin-top: -15px;">{{ form.inputText }}</div>
+    </div>
+    <div align="right" style="margin-top: -350px; margin-right: 20px;">
+    <!--<div ><p style="font-family:sans-serif; font-size: 30px;">discourse</p>-->
+        <div style="margin-right: 440px; margin-top: -20px;"><p style="font-family:sans-serif; font-size: 30px;">Discourse content</p></div>
+        {% if flag is 1 %}
+        <div style="margin-top: -18px;"><textarea id="box4" placeholder="  मराठी अनुवाद्" rows="10" cols="50" readonly>{{ ans }}
+        </textarea></div>
+        {% else %}
+        <div style="margin-top: -18px;"><textarea id="box5" placeholder="  मराठी अनुवाद्" rows="10" cols="50" readonly></textarea></div>
+        {% endif %}
+    </div>
+    <br><br>
+    <br>
+    <button class="button" onclick="myfunction('parsing...', 'reordering...', 'translating to marathi...')">Translate</button>
+    <br>
+    <img id="loading" src="{% static 'images/ajax-loader.gif'%}" style="display:none;" />
+    <p id="demo"></p>
+    <br>
+    <div style="margin-top: -70px;">
+    <div style="margin-left: -475px; margin-bottom: -22px;"><p style="font-family:sans-serif; font-size: 30px;">मराठी भाषांतर</p></div>
+    {% if flag is 1 %}
+    <textarea id="box2" placeholder="  मराठी अनुवाद्" rows="10" cols="50" readonly>{{ ans }}
+    </textarea>
+    {% else %}
+    <textarea id="box3" placeholder="  मराठी अनुवाद्" rows="10" cols="50" readonly></textarea>
+    {% endif %}
+    </div>
+
+</form>
+</div>
+<!--<script src="{% static 'js/aos.js'%}"></script>-->
+</body>
+</html>
